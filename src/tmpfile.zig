@@ -221,7 +221,7 @@ pub const TmpFile = struct {
                 },
                 if (args.prefix != null) args.prefix.? else "tmp",
                 random_path,
-		if (args.sufix != null) args.sufix.? else "",
+                if (args.sufix != null) args.sufix.? else "",
             });
 
             break :brk try path_buf.toOwnedSlice();
@@ -268,6 +268,7 @@ pub inline fn tmpDirOwned(args: TmpDir.TmpDirArgs) !*TmpDir {
 pub inline fn tmpFile(args: struct {
     tmp_dir: ?*TmpDir = null,
     prefix: ?[]const u8 = null,
+    sufix: ?[]const u8 = null,
     dir_prefix: ?[]const u8 = null,
     flags: std.fs.File.CreateFlags = .{ .read = true },
     dir_opts: std.fs.Dir.OpenDirOptions = .{},
@@ -278,6 +279,7 @@ pub inline fn tmpFile(args: struct {
             .tmp_dir = tmp_dir,
             .owned_tmp_dir = false,
             .prefix = args.prefix,
+            .sufix = args.sufix,
             .dir_prefix = args.dir_prefix,
             .flags = args.flags,
             .dir_opts = args.dir_opts,
@@ -292,6 +294,7 @@ pub inline fn tmpFile(args: struct {
             .tmp_dir = tmp_dir,
             .owned_tmp_dir = true,
             .prefix = args.prefix,
+            .sufix = args.sufix,
             .dir_prefix = args.dir_prefix,
             .flags = args.flags,
             .dir_opts = args.dir_opts,
@@ -303,6 +306,7 @@ pub inline fn tmpFile(args: struct {
 pub inline fn tmpFileOwned(args: struct {
     tmp_dir: ?*TmpDir = null,
     prefix: ?[]const u8 = null,
+    sufix: ?[]const u8 = null,
     dir_prefix: ?[]const u8 = null,
     flags: std.fs.File.CreateFlags = .{ .read = true },
     dir_opts: std.fs.Dir.OpenDirOptions = .{},
@@ -312,6 +316,7 @@ pub inline fn tmpFileOwned(args: struct {
     tmp_file.* = try tmpFile(.{
         .tmp_dir = args.tmp_dir,
         .prefix = args.prefix,
+        .sufix = args.prefix,
         .dir_prefix = args.dir_prefix,
         .flags = args.flags,
         .dir_opts = args.dir_opts,
