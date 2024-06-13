@@ -150,6 +150,7 @@ pub const TmpFile = struct {
         tmp_dir: *TmpDir,
         owned_tmp_dir: bool = false,
         prefix: ?[]const u8 = null,
+        sufix: ?[]const u8 = null,
         dir_prefix: ?[]const u8 = null,
         flags: std.fs.File.CreateFlags = .{ .read = true },
         dir_opts: std.fs.Dir.OpenDirOptions = .{},
@@ -207,7 +208,7 @@ pub const TmpFile = struct {
             var path_buf = std.ArrayList(u8).init(allocator);
             defer path_buf.deinit();
 
-            try path_buf.writer().print("{s}{c}{s}_{s}", .{
+            try path_buf.writer().print("{s}{c}{s}_{s}{s}", .{
                 args.tmp_dir.abs_path,
                 sepbrk: {
                     switch (builtin.os.tag) {
@@ -220,6 +221,7 @@ pub const TmpFile = struct {
                 },
                 if (args.prefix != null) args.prefix.? else "tmp",
                 random_path,
+		if (args.sufix != null) args.sufix.? else "",
             });
 
             break :brk try path_buf.toOwnedSlice();
